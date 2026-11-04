@@ -131,7 +131,11 @@ void journal_step(){
     }
     // All core submissions, metadata recovery and safety checks run before this step.
     // Never reserve the shared scheduler while control/ownership work is pending.
-    if(!Flash_background_idle()||
+    if(
+#if BMCU_SETUP_INSERTION_RECOVERY
+       (full_load_empty()&&ams[0].now_filament_num>=4u&&!v11_diagnostic_idle())||
+#endif
+       !Flash_background_idle()||
        (full_load_fault()==FullLoadFault::none&&(full_load_journal_pending()||Flash_metadata_recovery_pending()))||
        (setup_trial_phase()!=SetupPhase::operation&&setup_trial_phase()!=SetupPhase::fault&&
         setup_trial_phase()!=SetupPhase::success)||!bus_background_ready())return;

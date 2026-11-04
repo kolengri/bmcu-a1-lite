@@ -11,13 +11,13 @@ Install that platform revision into your PlatformIO environment before building:
 
 ```sh
 python3 -m platformio platform install https://github.com/Community-PIO-CH32V/platform-ch32v.git#7c674802c9041d215c8cb285a9e787a4aa0b487b
-python3 -m platformio run -e USB_ISP_EXPORT
-shasum -a 256 .pio/build/USB_ISP_EXPORT/firmware.bin
+python3 -m platformio run -e USB_SETUP_INSERTION_RECOVERY
+shasum -a 256 .pio/build/USB_SETUP_INSERTION_RECOVERY/firmware.bin
 ```
 
-The public default selects `USB_ISP_EXPORT`. Historical environments remain for
+The public default selects `USB_SETUP_INSERTION_RECOVERY`. Historical environments remain for
 source comparison; they are not interchangeable release images. Do not select an
-ordinary or earlier diagnostic profile when intending to build260b0403.
+ordinary or earlier diagnostic profile when intending to build260b0404.
 `isp-export.ld` reserves intent, journal and original control NVM.
 
 Compare a public source rebuild against the delivered BIN hash. Fresh dependency resolution is not a complete
@@ -32,9 +32,10 @@ are needed. From the repository root:
 
 ```sh
 python3 -B validation/firmware/tests/run_final.py
+python3 -B validation/firmware/tests/check_journal_flags.py --receipt receipts/insertion.json
 ```
 
-This runs105 cases against production source bodies with modeled hardware:7 intent,17
+This runs133 cases against production source bodies with modeled hardware:28 insertion/recovery,7 intent,17
 working boot, 10 journal, 5 retention, 46 requested-slot reply and 20 feature-OFF
 encoder regressions. It includes463 modeled interruption prefixes. Outputs are
 under ignored `validation/firmware/logs/`; receipts hash source and fixtures.
@@ -45,7 +46,21 @@ The working-mode cases replace obsolete one-use boot/rearm assumptions. Other
 historical fixture files remain because the harness records their identities;
 their presence does not mean every historical scenario applies to this profile.
 
-## Collector and wrapper
+The thirteen incompatible-profile checks use the published insertion receipt's
+exact defines. [Public receipts](../validation/firmware/receipts/summary.json)
+record a successful isolated run with the same source and case results as the
+accepted firmware packet; absolute temporary paths have been omitted.
+
+The manifest's `source_archive_sha256` identifies the original frozen build input.
+The curated public source archive has its own hash in release `SHA256SUMS`.
+Optional `run_insertion.py --parent` needs an explicit local0403 baseline at
+`validation/firmware/work/base0403`; the normal133-case run does not need it.
+
+## Historical collector and wrapper (260b0403 only)
+
+These tools are retained for research. They do not support the260b0404 image,
+and physical USB export remains blocked. Do not use their collection command
+as a260b0404 workflow. The commands below are offline/model checks.
 
 The bundled collector is a universal macOS 11+ binary for arm64 and x86_64.
 It accepts regular input files only and rejects serial-device and live-operation

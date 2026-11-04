@@ -362,3 +362,13 @@ void lite_lease_stop(bool retain=true);
 #if BMCU_USB_ISP_EXPORT && !BMCU_USB_WORKING_MODE
 #error "ISP export requires working mode"
 #endif
+
+#ifndef BMCU_SETUP_INSERTION_RECOVERY
+#define BMCU_SETUP_INSERTION_RECOVERY 0
+#endif
+#if BMCU_SETUP_INSERTION_RECOVERY != 0 && BMCU_SETUP_INSERTION_RECOVERY != 1
+#error "Setup insertion recovery must be 0 or 1"
+#endif
+#if BMCU_SETUP_INSERTION_RECOVERY && !BMCU_USB_ISP_EXPORT
+#error "Setup insertion recovery requires the ISP-export working profile"
+#endif

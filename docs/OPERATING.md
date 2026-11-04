@@ -2,16 +2,16 @@
 
 ## Scope
 
-260b0403 is an experimental build for the development hardware in the README.
-It has not yet had a physical working-mode acceptance run. Keep the previous
-known image and collect logs before replacing a firmware that just failed.
+260b0404 completed an owner-reported two-color print on the development setup.
+Other board revisions, printer versions, all-four-slot endurance and throughput
+are not qualified. Keep a known firmware image for recovery.
 
 ## Flash and first setup
 
 1. Remove filament so all four paths are empty. Turn the printer off and fully
    disconnect its cable from BMCU, including power. Connect BMCU only to USB.
-2. Verify `firmware/bmcu-a1-lite-260b0403.bin` against `firmware/manifest.json`.
-   Install with the board's established WCH-compatible BMCU flasher. The tested
+2. Verify `firmware/bmcu-a1-lite-260b0404.bin` against `firmware/manifest.json`.
+   Install with the board's established WCH-compatible [BMCU Flasher](https://github.com/jarczakpawel/BMCU-Flasher). The tested
    flashing workflow erases all 64 KiB, including calibration, ownership and logs;
    this release does not provide an in-place NVM migration.
 3. Close the flasher and disconnect USB. With the printer off, reconnect its
@@ -22,61 +22,38 @@ known image and collect logs before replacing a firmware that just failed.
    outward, then release/center the buffers. Direction testing may rotate the
    empty motors. The existing setup checks must finish before operation is admitted.
 5. Once setup finishes, insert filament and use the printer's normal Load/Unload
-   controls. Do not insert filament during calibration or direction testing.
+   controls. If filament is inserted during setup, remove it and leave the buffers
+   neutral: the firmware waits for1.5 seconds of stable empty inputs and continues.
+   The calibration-only cue is yellow; direction testing and storage preparation
+   may still follow. Invalid sensor/storage faults remain faults.
 
 Valid retained calibration and ownership skip empty recalibration on later boots.
 Retained ownership never synthesizes a movement command. Fresh printer commands
 are still required. An incomplete or invalid control-storage record can inhibit
 operation; do not force it clear while filament remains in the path.
 
-## Experimental USB log path on macOS
+## USB logs: known limitation
 
-**Known blocker on the development board:** the ISP marker write acknowledges
-success but does not pass the actual A6 comparison, even for the16-byte intent
-prefix. The corrected tool aborts before starting the application. The following
-command is retained for research and is not a working routine log-retrieval
-workflow. Do not erase/reflash a failed printer session to work around this.
+Automatic USB log collection is unavailable. The firmware retains a bounded
+journal, but the development board rejects verification of the non-erasing ISP
+export marker. Erasing/reflashing would destroy the evidence and is not a remedy.
+The bundled export helper and wrapper are historical260b0403 tools; they are not
+bound to260b0404. Do not use them against this release or bypass image checks.
 
-After a failure or completed test, turn off the printer, disconnect its complete
-cable from BMCU, and connect only USB. Do not reflash before collection. Close
-Flasher. Prepare the companion environment once, then collect from the repository:
+The successful two-color print and strict full-image installation verification
+do not establish successful marker programming or export. The detailed research
+notes distinguish these outcomes. Stock USB and the printer bus share a UART;
+this release does not support simultaneous USB streaming during printing.
 
-```sh
-python3 -m venv tools/bmcu-flasher-mcp/.venv
-tools/bmcu-flasher-mcp/.venv/bin/python -m pip install -r tools/bmcu-flasher-mcp/requirements.txt
-tools/bmcu-usb-logs/bmcu-usb collect --build 260b0403 --isolated-usb-only \
-  --note 'Printer cable disconnected; USB only; Flasher closed'
-```
+## Flashing transport note
 
-The wrapper checks the USB descriptor and port ownership without opening the
-serial device during preflight. Its flasher companion opens the port once,
-enters ISP using the development board's known DTR/RTS mapping, verifies every
-padded firmware block, and writes only the dedicated export-intent row at ED00.
-It never bulk-erases Flash or changes option bytes. The ROM's A2 command with
-reset parameter 1 requests
-inhibited export on the same 115200/8N1 descriptor, with no subsequent reset or
-modem-line change. The ISP response and application data are saved together. The C decoder
-then processes the saved raw file offline; its metadata does not claim live timing.
-The bundled decoder is universal macOS arm64/x86_64; Python3.9+, pyserial3.5 and
-macOS tools are required. This fixed AutoDI mapping is not qualified for other boards.
-There is no automatic retry, reconnect or re-arm. Save the entire output directory
-on failure. **Keep USB-only isolation until valid0403 export confirms marker
-consumption:** an interrupted operation can leave export intent pending.
-
-The output includes raw bytes, decoded events, exact marker, ISP result and integrity
-bindings. A blank journal before the first printer session is a valid transport
-with no event evidence. The journal is a rolling tail, not a complete test trace.
-Power-off is not a final flush; there is no terminal green-save wait in this mode.
-
-Offline validation of a saved directory never opens a port:
-
-```sh
-tools/bmcu-usb-logs/bmcu-usb verify artifacts/YOUR_CAPTURE --build 260b0403
-```
-
-After collection, disconnect USB before reconnecting the printer cable. The next
-normal printer boot needs no host ACK. Stock USB and the printer bus share a UART;
-this firmware does not offer simultaneous USB streaming during printing.
+The development installation verified all1,079 padded blocks with actual ISP
+status payload0000. Its pinned host adapter needed a narrow correction to the
+post-erase tail comparison: this board compared as repeated E339, not FF. The
+correction did not relax ordinary firmware comparisons. A flasher that stops
+at this check after erasing may leave no usable application; retain its error
+and use a compatible verified programmer rather than ignoring verification.
+The old bundled export-only helper is not the full flashing workflow.
 
 ## Physical acceptance and speed measurements
 

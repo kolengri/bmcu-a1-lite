@@ -150,6 +150,9 @@ void pull_admitted(uint8_t command,uint8_t ch){
 }
 void pull_pwm(uint8_t ch,uint16_t first,uint16_t second){
 #if BMCU_USB_CONTINUOUS_JOURNAL
+#if BMCU_SETUP_INSERTION_RECOVERY
+    if(ams[0].filament[ch].motion!=_filament_motion::pull_back)return;
+#endif
     static uint8_t seen=0;if(first!=second&&!(seen&(1u<<ch))){seen|=1u<<ch;jevent(11,ch,uint32_t(first)|(uint32_t(second)<<16));}return;
 #endif
 

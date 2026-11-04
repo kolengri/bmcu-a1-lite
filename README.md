@@ -1,48 +1,56 @@
 # BMCU A1 Lite
 
-Experimental BMCU firmware for a **Bambu Lab A1 on firmware 01.08.01.00**, using
-unmodified Bambu Studio. Development hardware is a **BMCU 370C DM Pro** with four
-channels and the CH32V203C8T6 target. The seller and exact PCB revision are unknown;
-the product name alone does not establish compatibility with other boards.
+BMCU firmware for **Bambu Lab A1 on firmware 01.08.01.00**, using unmodified
+Bambu Studio. Development hardware: **BMCU 370C DM Pro**, four channels,
+CH32V203C8T6. The exact PCB revision is unknown.
 
-**Status, 2026-11-04:** the owner completed a physical Unload successfully on
-build **260b0401**. Build **260b0403** retains that control/protocol code and adds
-normal startup across power cycles plus an experimental ISP-selected USB log path. Build0402
-programmed successfully but its first USB export returned zero bytes; it is superseded.
-Build0403's installed image was independently verified in full. Its printer
-operation has not yet been physically qualified. **Automatic USB log retrieval
-is currently unavailable:** ISP acknowledges the marker write, but comparison
-returns F500; the corrected tool stops and reports failure. No print,
-multicolor endurance, speed increase or general A1 firmware compatibility is claimed.
+**Build 260b0404: the owner successfully printed a two-color part on 2026-11-04.**
+This is one reported physical print on the development setup, not a qualification
+of every board, slot combination or printer version. The same installed binary
+is provided below. [Evidence and limits](docs/VALIDATION.json).
 
-## Download and use
+## Download and install
 
-- [260b0403 firmware](firmware/bmcu-a1-lite-260b0403.bin)
-- [SHA256 and source manifest](firmware/manifest.json)
-- [Installation, calibration and log retrieval](docs/OPERATING.md)
-- [What changed and why Unload failed](docs/RESEARCH.md)
-- [Architecture and evidence limits](docs/ARCHITECTURE.md)
-- [Build and test instructions](docs/BUILDING.md)
-- [Attribution and upstream licensing status](NOTICE.md)
+- [Release and downloads](https://github.com/kolengri/bmcu-a1-lite/releases/tag/260b0404)
+- [Firmware BIN](firmware/bmcu-a1-lite-260b0404.bin)
+- [Exact hashes and source manifest](firmware/manifest.json)
+- [Installation and calibration](docs/OPERATING.md)
+- [Build and host tests](docs/BUILDING.md)
 
-The source is based on [BMCU-C-PJARCZAK](https://github.com/jarczakpawel/BMCU-C-PJARCZAK),
-commit `5b8e235576f9d6c30403e737451ef60f97857dac`. This is an independent research
-project, not an official Bambu Lab firmware. No printer firmware downgrade or
-authentication bypass is included.
+BIN SHA256:
 
-## What this firmware does
+```text
+487c6c9f07f93a5682f81b9a1f838ee1f6106c1b19d8ab09875d07543b7efdb5
+```
 
-- Implements the project's AMS Lite protocol path, including requested-slot
-  `07/99` replies with that slot's actual encoder coordinate.
-- Supports four channels and repeated Load/Unload through the existing controller.
-- Preserves durable shared-path ownership, heartbeat lease, sensor checks,
-  calibration, jam and movement limits.
-- Keeps a bounded, CRC-protected journal without stopping operation after 120 seconds.
-- Starts normally after validated printer traffic; USB retrieval does not consume
-  or require a one-use boot permit.
+Flash with all four paths empty, the complete printer cable disconnected, and
+USB as the only connection. Flashing erases calibration and saved logs. Disconnect
+USB before reconnecting BMCU to the powered-off printer and completing setup.
 
-This goes beyond changing the advertised AMS type. See the research notes for
-protocol, control and diagnostic changes, rejected hypotheses and remaining gaps.
-USB collection requires disconnecting the entire printer cable from BMCU.
-Simultaneous printer and USB operation is not supported by this release.
+**Known limitation:** automatic USB log retrieval remains unavailable. The older
+bundled export tools are research tools pinned to260b0403, not a supported log
+collector for260b0404. Simultaneous printer and USB operation is not supported.
 
+## What changed
+
+- Implements an AMS Lite protocol path; this is more than changing the advertised
+  AMS identity. Addressed `07/99` replies identify the requested slot and its real
+  encoder coordinate, fixing the observed selected-slot response discrepancy.
+- Supports four channels in the controller and repeated Load/Unload. The current
+  physical evidence covers a two-color print; all-four-slot endurance is untested.
+- Keeps path ownership, heartbeat lease, sensor validity, calibration and jam limits.
+- Starts normally on printer traffic without a diagnostic re-arm for every session.
+- Recovers from early filament insertion during setup: motion pauses, and removal
+  followed by stable empty inputs lets setup continue. Calibration-only completion
+  is yellow because direction detection and storage preparation still follow.
+- Prevents diagnostic Flash writes from cancelling local filament intake.
+- Keeps a bounded continuous diagnostic journal without the old120-second stop.
+
+Read [the research findings](docs/RESEARCH.md), [runtime and storage design](docs/ARCHITECTURE.md)
+and [the change-size assessment](docs/UPSTREAM-DELTA.md). Motor speed is unchanged;
+there is no measured speed improvement.
+
+Based on [BMCU-C-PJARCZAK](https://github.com/jarczakpawel/BMCU-C-PJARCZAK),
+commit `5b8e235576f9d6c30403e737451ef60f97857dac`. This is an independent project,
+not an official Bambu Lab firmware. No printer downgrade or authentication bypass
+is included. See [attribution and upstream licensing status](NOTICE.md).

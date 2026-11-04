@@ -4,7 +4,9 @@
 namespace flight {
 #if BMCU_LITE_AUTOMATIC_CAPTURE
 #if BMCU_USB_CONTINUOUS_JOURNAL
-#if BMCU_USB_ISP_EXPORT
+#if BMCU_SETUP_INSERTION_RECOVERY
+constexpr uint32_t build=0x260b0404u;
+#elif BMCU_USB_ISP_EXPORT
 constexpr uint32_t build=0x260b0403u;
 #elif BMCU_USB_WORKING_MODE
 constexpr uint32_t build=0x260b0402u;

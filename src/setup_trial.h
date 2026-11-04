@@ -30,7 +30,14 @@ bool setup_trial_bus_allowed();
 bool setup_trial_selected();
 void setup_trial_fail(SetupFault reason);
 void setup_trial_admission_fail(SetupFault reason,uint8_t detail); // Frozen early-boot detail1..6 only.
-bool setup_trial_poll(bool centered = false);
+bool setup_trial_poll(bool centered = false
+#if BMCU_SETUP_INSERTION_RECOVERY
+    , bool committing = false
+#endif
+);
+#if BMCU_SETUP_INSERTION_RECOVERY
+bool setup_trial_retry_pending();
+#endif
 bool setup_trial_write_allowed(SetupWrite kind);
 bool setup_trial_flash_address(uint32_t address);
 bool setup_trial_drive_allowed(uint8_t ch, int pwm);
@@ -43,7 +50,11 @@ uint32_t setup_trial_led_rgb(uint64_t ticks);
 SetupStorage Flash_setup_probe(); // Uses production readers and scan/cache flags.
 bool Flash_setup_fault();
 bool Motion_control_setup_init(bool empty = true);
-bool Motion_control_setup_inputs(bool centered, bool calibrated, bool empty = true);
+bool Motion_control_setup_inputs(bool centered, bool calibrated, bool empty = true
+#if BMCU_SETUP_INSERTION_RECOVERY
+    , const float* snapshot = nullptr
+#endif
+);
 bool Motion_control_setup_retained();
 bool Motion_control_setup_direction();
 void Motion_control_setup_stop();

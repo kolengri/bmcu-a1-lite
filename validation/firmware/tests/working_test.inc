@@ -1,5 +1,5 @@
 #if BMCU_USB_ISP_EXPORT
-static void working_marker_prepare(){const uint32_t words[4]={0x33494642u,flight::build,0x00010001u,0x1342b362u};memcpy(host_marker,words,16);}
+static void working_marker_prepare(){uint32_t words[4]={0x33494642u,flight::build,0x00010001u,0};words[3]=flight::jcrc(words,12);memcpy(host_marker,words,16);}
 #endif
 // Actual main/bootstrap/parser/scheduler; only hardware/time are modeled.
 static Packet working_request(){Packet p(15);p[0]=0x3d;p[1]=0xc5;p[2]=15;p[4]=0xfe;memcpy(p.data()+5,"BFX2",4);memcpy(p.data()+9,&flight::build,4);package_add_crc(p.data(),p.size());return p;}

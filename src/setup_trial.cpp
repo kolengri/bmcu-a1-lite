@@ -36,6 +36,11 @@ static void gesture_cue_clear() {
 static SetupPhase phase = SetupPhase::inspect;
 static SetupFault fault = SetupFault::none;
 static bool selected = false, calibrated = false;
+#if BMCU_SETUP_INSERTION_RECOVERY
+static bool insertion_paused=false;
+static uint8_t insertion_epoch=0, retry_stage=0;
+bool setup_trial_retry_pending(){return retry_stage!=0u;}
+#endif
 #if BMCU_LITE_V11_FEATURES
 static bool maintenance=false, maintenance_clearing=false;
 bool setup_trial_maintenance_clearing() { return maintenance && maintenance_clearing; }
@@ -97,14 +102,27 @@ static bool cal_retained() {
             (pol[ch]!=1 && pol[ch]!=-1)) return false;
     return true;
 }
-bool setup_trial_poll(bool centered) {
+bool setup_trial_poll(bool centered
+#if BMCU_SETUP_INSERTION_RECOVERY
+    , bool committing
+#endif
+) {
+#if BMCU_SETUP_INSERTION_RECOVERY
+    if(retry_stage)return false; // Unwind all sampling callers before a fresh attempt.
+    uint64_t quiet=0,paused_at=0;float low[4],high[4];
+    for(;;){
+#endif
 #if BMCU_LITE_FULL_LOAD
     if (phase == SetupPhase::operation) return false;
 #endif
     if (phase == SetupPhase::trial || phase == SetupPhase::fault || phase == SetupPhase::success) return false;
     if (!clock_ok()) return false;
     const uint64_t now=last_ticks;
-    if (phase == SetupPhase::direction && now-phase_origin > uint64_t(scale)*2500u) {
+    if (phase == SetupPhase::direction &&
+#if BMCU_SETUP_INSERTION_RECOVERY
+        !insertion_paused &&
+#endif
+        now-phase_origin > uint64_t(scale)*2500u) {
         setup_trial_fail(SetupFault::direction); return false;
     }
     ADC_DMA_poll();
@@ -113,18 +131,66 @@ bool setup_trial_poll(bool centered) {
     if (got!=generation) { generation=got; adc_progress=now; }
     if (now-adc_progress > uint64_t(scale)*100u) { setup_trial_fail(SetupFault::adc); return false; }
     if (Flash_setup_fault() || (phase!=SetupPhase::journal && !Flash_background_idle())) { setup_trial_fail(SetupFault::storage); return false; }
+#if BMCU_SETUP_INSERTION_RECOVERY
+    const float* v=ADC_DMA_get_value();bool present=false,neutral=true;
+    for(uint8_t ch=0;ch<4;++ch){
+        present|=v[7-2*ch]>=.55f;
+        neutral&=fabsf(v[6-2*ch]+(calibrated?MC_PULL_V_OFFSET[ch]:0.f)-1.65f)<=(calibrated?.08f:.25f);
+    }
+    if(present&&!insertion_paused){
+        insertion_paused=true;paused_at=now;Motion_control_setup_stop();gesture_cue_clear();
+    }
+    // Known presence/recovery only suspends empty/centered requirements. Hard
+    // ADC, module and encoder faults remain live on every stopped wait iteration.
+    const bool ok=Motion_control_setup_inputs(centered&&!insertion_paused,calibrated,!insertion_paused,v);
+#else
     const bool ok=Motion_control_setup_inputs(centered,calibrated);
+#endif
     if (!ok || phase==SetupPhase::fault || !clock_ok()) return false;
+#if BMCU_SETUP_INSERTION_RECOVERY
+    if(insertion_paused){
+        if(present||!neutral)quiet=0;
+        else{
+            if(!quiet){quiet=now;for(uint8_t ch=0;ch<4;++ch)low[ch]=high[ch]=v[6-2*ch];}
+            for(uint8_t ch=0;ch<4;++ch){float raw=v[6-2*ch];if(raw<low[ch])low[ch]=raw;if(raw>high[ch])high[ch]=raw;
+                if(high[ch]-low[ch]>.04f)quiet=0;}
+            if(quiet&&now-quiet>=uint64_t(scale)*1500u){
+                insertion_paused=false;++insertion_epoch;
+                if(phase==SetupPhase::direction)phase_origin+=now-paused_at;
+                if(!committing&&(phase==SetupPhase::gesture||phase==SetupPhase::direction||
+                    (phase==SetupPhase::calibration&&!calibrated))){retry_stage=uint8_t(phase);return false;}
+                return true;
+            }
+        }
+        display(true);delay(1);continue;
+    }
+#endif
     display(false);
     return phase!=SetupPhase::fault;
+#if BMCU_SETUP_INSERTION_RECOVERY
+    }
+#endif
 }
 bool setup_trial_write_allowed(SetupWrite kind) {
     const bool allowed = (kind==SetupWrite::cal && phase==SetupPhase::calibration) ||
         (kind==SetupWrite::motion && phase==SetupPhase::direction) ||
         (kind==SetupWrite::journal && phase==SetupPhase::journal);
-    return allowed && setup_trial_poll(true);
+    return allowed && setup_trial_poll(true
+#if BMCU_SETUP_INSERTION_RECOVERY
+        , true
+#endif
+    );
 }
 bool setup_trial_flash_address(uint32_t address) {
+#if BMCU_SETUP_INSERTION_RECOVERY
+    // Never unwind a partially programmed, validated record for a soft retry.
+    const bool domain=(maintenance&&phase==SetupPhase::calibration)?
+        ((address>=0x0800f000u&&address<0x0800f100u)||(address>=0x0800ff00u&&address<0x08010000u)):
+        phase==SetupPhase::calibration?(address>=0x0800f000u&&address<0x0800f100u):
+        phase==SetupPhase::direction?(address>=0x0800f100u&&address<0x0800f200u):
+        phase==SetupPhase::journal&&(address>=0x0800f600u&&address<0x0800f608u);
+    return domain&&setup_trial_poll(true,true);
+#else
 #if BMCU_LITE_V11_FEATURES
     if (maintenance && phase==SetupPhase::calibration)
         return ((address>=0x0800f000u && address<0x0800f100u) ||
@@ -135,6 +201,7 @@ bool setup_trial_flash_address(uint32_t address) {
     // Fresh setup only uses its first erased journal slot; rollover is never permitted.
     if (phase==SetupPhase::journal) return address>=0x0800f600u && address<0x0800f608u && setup_trial_poll(true);
     return false;
+#endif
 }
 bool setup_trial_drive_allowed(uint8_t ch,int pwm) {
     if (phase!=SetupPhase::direction || ch>=4 || pwm<0 || pwm>1000) {
@@ -144,6 +211,9 @@ bool setup_trial_drive_allowed(uint8_t ch,int pwm) {
 }
 uint32_t setup_trial_led_rgb(uint64_t ticks) {
     if (!scale || fault==SetupFault::clock) return 0x180000u; // Timing cannot be trusted.
+#if BMCU_SETUP_INSERTION_RECOVERY
+    if(insertion_paused&&fault==SetupFault::none)return 0x181800u;
+#endif
     if (fault==SetupFault::none && (phase==SetupPhase::inspect || phase==SetupPhase::gesture)) {
 #if BMCU_LITE_SETUP_RELEASE_CUE
         if (phase==SetupPhase::gesture && gesture_ack_channel<4u) return 0x001800u;
@@ -197,10 +267,17 @@ static void wait_tick(bool all=false) { display(all); delay(1); }
 static bool stable_empty(uint32_t ms) {
     float low[4], high[4];
     for (uint8_t ch=0;ch<4;++ch) low[ch]=high[ch]=ADC_DMA_get_value()[6-2*ch];
-    const uint64_t start=time_ticks64();
+    uint64_t start=time_ticks64();
+#if BMCU_SETUP_INSERTION_RECOVERY
+    uint8_t epoch=insertion_epoch;
+#endif
     while (time_ticks64()-start < uint64_t(scale)*ms) {
         if (!setup_trial_poll(true)) return false;
         const float *v=ADC_DMA_get_value();
+#if BMCU_SETUP_INSERTION_RECOVERY
+        if(epoch!=insertion_epoch){epoch=insertion_epoch;start=time_ticks64();
+            for(uint8_t ch=0;ch<4;++ch)low[ch]=high[ch]=v[6-2*ch];}
+#endif
         for(uint8_t ch=0;ch<4;++ch) {
             const float raw=v[6-2*ch]; if(raw<low[ch])low[ch]=raw; if(raw>high[ch])high[ch]=raw;
             if(high[ch]-low[ch]>.04f){setup_trial_fail(SetupFault::adc);return false;}
@@ -290,19 +367,43 @@ static bool gesture() {
 #if BMCU_LITE_V11_FEATURES
 static void run_empty_setup() {
     if (!scale || !Motion_control_setup_init()) { if (fault==SetupFault::none) setup_trial_fail(SetupFault::encoder); park(); }
+#if BMCU_SETUP_INSERTION_RECOVERY
+    do{retry_stage=0;
+#endif
     phase=SetupPhase::gesture; reached=1;
-    if (!gesture()) park();
+    if (!gesture()
+#if BMCU_SETUP_INSERTION_RECOVERY
+        && !retry_stage
+#endif
+    ) park();
+#if BMCU_SETUP_INSERTION_RECOVERY
+    }while(retry_stage);
+    do{retry_stage=0;
+#endif
     phase=SetupPhase::calibration; reached=2; phase_origin=time_ticks64();
     MC_PULL_calibration_boot();
     if (fault!=SetupFault::none) park();
+#if BMCU_SETUP_INSERTION_RECOVERY
+    }while(retry_stage);
+#endif
     if (!cal_retained()) { setup_trial_fail(SetupFault::calibration); park(); }
     for(uint8_t ch=0;ch<4;++ch) if (!MC_PULL_calibration_is_valid(ch)) {
         setup_trial_fail(SetupFault::calibration); park();
     }
     calibrated=true;
     if (!stable_empty(1500)) park();
+#if BMCU_SETUP_INSERTION_RECOVERY
+    do{retry_stage=0;
+#endif
     phase=SetupPhase::direction; reached=3; phase_origin=time_ticks64();
-    if (!Motion_control_setup_direction()) { if(fault==SetupFault::none)setup_trial_fail(SetupFault::direction); park(); }
+    if (!Motion_control_setup_direction()) {
+#if BMCU_SETUP_INSERTION_RECOVERY
+        if(retry_stage)continue;
+#endif
+        if(fault==SetupFault::none)setup_trial_fail(SetupFault::direction); park(); }
+#if BMCU_SETUP_INSERTION_RECOVERY
+    }while(retry_stage);
+#endif
     if (!Motion_control_setup_retained()) { setup_trial_fail(SetupFault::verification); park(); }
     phase=SetupPhase::journal; reached=4; phase_origin=time_ticks64();
     if (!stable_empty(1500)) park();
@@ -311,12 +412,19 @@ static void run_empty_setup() {
         (before.journal_erased && !before.journal_valid && !before.journal_invalid);
     if (before.fault || before.busy || !journal_ok ||
         !cal_retained() || !Motion_control_setup_retained()) { setup_trial_fail(SetupFault::verification); park(); }
-    const uint64_t start=time_ticks64();
+    uint64_t start=time_ticks64();
+#if BMCU_SETUP_INSERTION_RECOVERY
+    uint8_t commit_epoch=insertion_epoch;
+#endif
     bool committed=maintenance;
     while (!committed && time_ticks64()-start < uint64_t(scale)*500u) {
         if (!setup_trial_poll(true)) park();
         if (Flash_AMS_state_write(0xffu)) { committed=true; break; }
         Flash_background_run(); wait_tick();
+#if BMCU_SETUP_INSERTION_RECOVERY
+        // Paused time is not Flash work, including nested scheduler permissions.
+        if(commit_epoch!=insertion_epoch){commit_epoch=insertion_epoch;start=time_ticks64();}
+#endif
     }
     if (!committed) { setup_trial_fail(SetupFault::write); park(); }
     const SetupStorage after=Flash_setup_probe();

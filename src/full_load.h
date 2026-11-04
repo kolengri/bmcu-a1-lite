@@ -46,6 +46,9 @@ bool v11_local_eligible();
 bool v11_local_drive_allowed(uint8_t ch);
 void v11_local_preempt();
 bool v11_metadata_allowed();
+#if BMCU_SETUP_INSERTION_RECOVERY
+bool v11_diagnostic_idle();
+#endif
 bool v11_maintenance_allowed();
 #endif
 void lite_reserved_send_ready(uint8_t ch);

@@ -1,0 +1,56 @@
+{
+  "build": "260b0404",
+  "relocated_public_tree": true,
+  "private_checkout_required": false,
+  "case_count": 133,
+  "all_cases_passed": true,
+  "case_results_equal_frozen_receipts": true,
+  "source_and_compiled_source_hashes_equal_frozen_receipts": true,
+  "assertions_and_fixtures_preserved": true,
+  "suites": {
+    "insertion": {
+      "path": "validation/firmware/receipts/insertion.json",
+      "sha256": "45378f80b3e787882a20fb25744aeecc01e1735dd6084c3a6e08b9ec2991c18c",
+      "cases": 28
+    },
+    "marker": {
+      "path": "validation/firmware/receipts/marker.json",
+      "sha256": "ef4839e9324c129383715bf3fcde8eea83209134cf08dea0120d07687bbd464f",
+      "cases": 7
+    },
+    "working": {
+      "path": "validation/firmware/receipts/working.json",
+      "sha256": "52ae435d3284e49c2a9b6ba5b0766190dd5a413936e499336fd1c757a543dd7c",
+      "cases": 17
+    },
+    "journal": {
+      "path": "validation/firmware/receipts/journal.json",
+      "sha256": "f7828ff131ff5d8f1f9a025802bb30de944ea6e39136738bce112ed48ccb0010",
+      "cases": 10
+    },
+    "retention": {
+      "path": "validation/firmware/receipts/retention.json",
+      "sha256": "34ecf71d31c36b740a8f687ce6c9f7708eebb746980fd93a64ff2ff23e2d2d08",
+      "cases": 5
+    },
+    "request_feedback": {
+      "path": "validation/firmware/receipts/request_feedback.json",
+      "sha256": "871c9cd63c6365fee81869cd3afb01aeac404714b7de29d5248160be00a261b4",
+      "cases": 46
+    },
+    "encoder_OFF": {
+      "path": "validation/firmware/receipts/encoder_OFF.json",
+      "sha256": "3438ac4336c1fa61ff34473b246a040f7b2dbcd8586743f4a7ca1f8ed25689a9",
+      "cases": 20
+    }
+  },
+  "invalid_profiles_rejected": 13,
+  "flag_header_default_off": true,
+  "physical_hardware": false,
+  "serial_opened": false,
+  "firmware_rebuilt": false,
+  "flags": {
+    "path": "validation/firmware/receipts/flags.json",
+    "sha256": "d035ec2fa6c2f9ba7c684c3c9fbb49e2c48cc8ea6102f27cb37e204ff2ca0081"
+  }
+}
