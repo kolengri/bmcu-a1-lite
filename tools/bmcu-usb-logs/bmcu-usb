@@ -1,0 +1,6 @@
+#!/usr/bin/python3
+"""Project entry point; the script's location, not the caller's cwd, selects the project."""
+from workflow import main
+
+if __name__ == "__main__":
+    raise SystemExit(main())

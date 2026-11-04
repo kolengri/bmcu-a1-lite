@@ -1,0 +1,21 @@
+[
+  "release-ch0",
+  "release-ch1",
+  "release-ch2",
+  "release-ch3",
+  "release-long-held",
+  "release-short",
+  "release-retry",
+  "release-hold-reset",
+  "release-neutral-bounce",
+  "release-held-timeout",
+  "release-adc-before",
+  "release-adc-after",
+  "release-clock-before",
+  "release-clock-after",
+  "release-filament-before",
+  "release-filament-after",
+  "release-queued-fault",
+  "release-near-hold",
+  "release-near-release"
+]

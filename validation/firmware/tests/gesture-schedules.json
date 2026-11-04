@@ -1,0 +1,521 @@
+{
+  "detail-none": {
+    "channel": 2,
+    "segments_ms_deltaV": [],
+    "parent": 9,
+    "detail": 1,
+    "ack": false,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "detail-subthreshold": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        30000,
+        0.1
+      ]
+    ],
+    "parent": 9,
+    "detail": 1,
+    "ack": false,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "detail-partial": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        2300,
+        -0.2
+      ]
+    ],
+    "parent": 9,
+    "detail": 2,
+    "ack": false,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "detail-repeated-short": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        2300,
+        -0.2
+      ],
+      [
+        3000,
+        4000,
+        -0.2
+      ],
+      [
+        5000,
+        6500,
+        -0.2
+      ]
+    ],
+    "parent": 9,
+    "detail": 2,
+    "ack": false,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "detail-held": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        30000,
+        -0.2
+      ]
+    ],
+    "parent": 9,
+    "detail": 3,
+    "ack": true,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "detail-incomplete-release": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        4400,
+        -0.2
+      ],
+      [
+        5400,
+        30000,
+        -0.08
+      ]
+    ],
+    "parent": 9,
+    "detail": 3,
+    "ack": true,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "detail-unstable-release": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        4400,
+        -0.2
+      ],
+      [
+        5100,
+        5300,
+        -0.08
+      ],
+      [
+        5900,
+        6100,
+        -0.08
+      ],
+      [
+        6600,
+        30000,
+        -0.08
+      ]
+    ],
+    "parent": 9,
+    "detail": 3,
+    "ack": true,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "detail-normal": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        4400,
+        -0.2
+      ]
+    ],
+    "parent": 0,
+    "detail": 0,
+    "ack": true,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "detail-adc-first": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        30000,
+        -0.2
+      ]
+    ],
+    "parent": 6,
+    "detail": 0,
+    "ack": false,
+    "fault": "adc",
+    "fault_ms": 3000
+  },
+  "detail-filament-first": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        30000,
+        -0.2
+      ]
+    ],
+    "parent": 5,
+    "detail": 0,
+    "ack": false,
+    "fault": "filament",
+    "fault_ms": 3000
+  },
+  "detail-clock-first": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        30000,
+        -0.2
+      ]
+    ],
+    "parent": 8,
+    "detail": 0,
+    "ack": false,
+    "fault": "clock",
+    "fault_ms": 3000
+  },
+  "detail-storage-first": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        30000,
+        -0.2
+      ]
+    ],
+    "parent": 1,
+    "detail": 0,
+    "ack": false,
+    "fault": "storage",
+    "fault_ms": 3000
+  },
+  "release-ch0": {
+    "channel": 0,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        4400,
+        -0.2
+      ]
+    ],
+    "parent": 0,
+    "detail": 0,
+    "ack": true,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "release-ch1": {
+    "channel": 1,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        4400,
+        -0.2
+      ]
+    ],
+    "parent": 0,
+    "detail": 0,
+    "ack": true,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "release-ch2": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        4400,
+        -0.2
+      ]
+    ],
+    "parent": 0,
+    "detail": 0,
+    "ack": true,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "release-ch3": {
+    "channel": 3,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        4400,
+        -0.2
+      ]
+    ],
+    "parent": 0,
+    "detail": 0,
+    "ack": true,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "release-long-held": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        8000,
+        -0.2
+      ]
+    ],
+    "parent": 0,
+    "detail": 0,
+    "ack": true,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "release-short": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        2300,
+        -0.2
+      ]
+    ],
+    "parent": 9,
+    "detail": 2,
+    "ack": false,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "release-retry": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        2300,
+        -0.2
+      ],
+      [
+        3000,
+        4500,
+        -0.2
+      ]
+    ],
+    "parent": 0,
+    "detail": 0,
+    "ack": true,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "release-hold-reset": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        2700,
+        -0.2
+      ],
+      [
+        2800,
+        3500,
+        -0.2
+      ],
+      [
+        3700,
+        5200,
+        -0.2
+      ]
+    ],
+    "parent": 0,
+    "detail": 0,
+    "ack": true,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "release-neutral-bounce": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        4400,
+        -0.2
+      ],
+      [
+        5100,
+        5500,
+        -0.08
+      ]
+    ],
+    "parent": 0,
+    "detail": 0,
+    "ack": true,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "release-held-timeout": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        30000,
+        -0.2
+      ]
+    ],
+    "parent": 9,
+    "detail": 3,
+    "ack": true,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "release-adc-before": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        30000,
+        -0.2
+      ]
+    ],
+    "parent": 6,
+    "detail": 0,
+    "ack": false,
+    "fault": "adc",
+    "fault_ms": 2500
+  },
+  "release-adc-after": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        30000,
+        -0.2
+      ]
+    ],
+    "parent": 6,
+    "detail": 0,
+    "ack": true,
+    "fault": "adc",
+    "fault_ms": 7000
+  },
+  "release-clock-before": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        30000,
+        -0.2
+      ]
+    ],
+    "parent": 8,
+    "detail": 0,
+    "ack": false,
+    "fault": "clock",
+    "fault_ms": 2500
+  },
+  "release-clock-after": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        30000,
+        -0.2
+      ]
+    ],
+    "parent": 8,
+    "detail": 0,
+    "ack": true,
+    "fault": "clock",
+    "fault_ms": 7000
+  },
+  "release-filament-before": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        30000,
+        -0.2
+      ]
+    ],
+    "parent": 5,
+    "detail": 0,
+    "ack": false,
+    "fault": "filament",
+    "fault_ms": 2500
+  },
+  "release-filament-after": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        30000,
+        -0.2
+      ]
+    ],
+    "parent": 5,
+    "detail": 0,
+    "ack": true,
+    "fault": "filament",
+    "fault_ms": 7000
+  },
+  "release-queued-fault": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        30000,
+        -0.2
+      ]
+    ],
+    "parent": 5,
+    "detail": 0,
+    "ack": true,
+    "fault": "queued",
+    "fault_ms": 4500
+  },
+  "release-near-hold": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        2980,
+        -0.2
+      ],
+      [
+        4000,
+        5500,
+        -0.2
+      ]
+    ],
+    "parent": 0,
+    "detail": 0,
+    "ack": true,
+    "fault": "",
+    "fault_ms": 0
+  },
+  "release-near-release": {
+    "channel": 2,
+    "segments_ms_deltaV": [
+      [
+        2000,
+        4400,
+        -0.2
+      ],
+      [
+        5590,
+        5700,
+        -0.08
+      ]
+    ],
+    "parent": 0,
+    "detail": 0,
+    "ack": true,
+    "fault": "",
+    "fault_ms": 0
+  }
+}

@@ -1,0 +1,732 @@
+{
+  "cue-ack-adc": {
+    "ack": true,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "adc",
+    "fault_stage": "ack",
+    "parent": 6,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-ack-clock": {
+    "ack": true,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "clock",
+    "fault_stage": "ack",
+    "parent": 8,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-ack-key": {
+    "ack": true,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "key",
+    "fault_stage": "ack",
+    "parent": 5,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-ack-storage": {
+    "ack": true,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "storage",
+    "fault_stage": "ack",
+    "parent": 1,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-baseline-adc": {
+    "ack": false,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "adc",
+    "fault_stage": "baseline",
+    "parent": 6,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-baseline-clock": {
+    "ack": false,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "clock",
+    "fault_stage": "baseline",
+    "parent": 8,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-baseline-key": {
+    "ack": false,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "key",
+    "fault_stage": "baseline",
+    "parent": 5,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-baseline-storage": {
+    "ack": false,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "storage",
+    "fault_stage": "baseline",
+    "parent": 1,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-candidate-switch": {
+    "ack": false,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 6,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        600,
+        2,
+        1799
+      ],
+      [
+        1500,
+        30000,
+        1,
+        1799
+      ]
+    ]
+  },
+  "cue-competition": {
+    "ack": false,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 6,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        1799
+      ],
+      [
+        300,
+        30000,
+        1,
+        1799
+      ]
+    ]
+  },
+  "cue-delayed-admission": {
+    "ack": true,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 0,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        2800,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-held": {
+    "ack": true,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 3,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 9,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-late-release": {
+    "ack": true,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 0,
+    "segments_ms_channel_raw": [
+      [
+        9500,
+        13500,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-offset-baselines": {
+    "ack": true,
+    "baseline_raw": [
+      1990,
+      2020,
+      2050,
+      2080
+    ],
+    "detail": 0,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 0,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        2800,
+        2,
+        1801
+      ]
+    ]
+  },
+  "cue-park-reentry": {
+    "ack": false,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 0,
+    "segments_ms_channel_raw": []
+  },
+  "cue-queued-fault": {
+    "ack": true,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "key",
+    "fault_stage": "ack",
+    "parent": 5,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-quick-release": {
+    "ack": true,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 0,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        2350,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-short": {
+    "ack": false,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 2,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 9,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        600,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-subthreshold": {
+    "ack": false,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 1,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 9,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        2172
+      ]
+    ]
+  },
+  "cue-valid-0": {
+    "ack": true,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 0,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        2800,
+        0,
+        1799
+      ]
+    ]
+  },
+  "cue-valid-1": {
+    "ack": true,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 0,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        2800,
+        1,
+        2296
+      ]
+    ]
+  },
+  "cue-valid-2": {
+    "ack": true,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 0,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        2800,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-valid-3": {
+    "ack": true,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 0,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        2800,
+        3,
+        2296
+      ]
+    ]
+  },
+  "cue-window-adc": {
+    "ack": false,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "adc",
+    "fault_stage": "window",
+    "parent": 6,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-window-clock": {
+    "ack": false,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "clock",
+    "fault_stage": "window",
+    "parent": 8,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-window-key": {
+    "ack": false,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "key",
+    "fault_stage": "window",
+    "parent": 5,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-window-storage": {
+    "ack": false,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 0,
+    "fault": "storage",
+    "fault_stage": "window",
+    "parent": 1,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        2,
+        1799
+      ]
+    ]
+  },
+  "cue-zero": {
+    "ack": false,
+    "baseline_raw": [
+      2048,
+      2048,
+      2048,
+      2048
+    ],
+    "detail": 1,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 9,
+    "segments_ms_channel_raw": []
+  },
+  "cue-owner-1578": {
+    "ack": true,
+    "baseline_raw": [
+      2007,
+      2081,
+      2056,
+      2079
+    ],
+    "detail": 0,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 0,
+    "segments_ms_channel_raw": [
+      [
+        3157,
+        4735,
+        0,
+        1325
+      ],
+      [
+        13396,
+        20000,
+        0,
+        1325
+      ]
+    ]
+  },
+  "cue-hold-950": {
+    "ack": false,
+    "baseline_raw": [
+      2007,
+      2081,
+      2056,
+      2079
+    ],
+    "detail": 2,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 9,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        1250,
+        0,
+        1325
+      ]
+    ]
+  },
+  "cue-hold-1050": {
+    "ack": true,
+    "baseline_raw": [
+      2007,
+      2081,
+      2056,
+      2079
+    ],
+    "detail": 0,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 0,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        1350,
+        0,
+        1325
+      ]
+    ]
+  },
+  "cue-repeat-300": {
+    "ack": false,
+    "baseline_raw": [
+      2007,
+      2081,
+      2056,
+      2079
+    ],
+    "detail": 2,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 9,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        600,
+        0,
+        1325
+      ],
+      [
+        2000,
+        2300,
+        0,
+        1325
+      ],
+      [
+        4000,
+        4300,
+        0,
+        1325
+      ]
+    ]
+  },
+  "cue-one-second-held": {
+    "ack": true,
+    "baseline_raw": [
+      2007,
+      2081,
+      2056,
+      2079
+    ],
+    "detail": 3,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 9,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        0,
+        1325
+      ]
+    ]
+  },
+  "cue-below-threshold": {
+    "ack": false,
+    "baseline_raw": [
+      2007,
+      2081,
+      2056,
+      2079
+    ],
+    "detail": 1,
+    "fault": "",
+    "fault_stage": "",
+    "parent": 9,
+    "segments_ms_channel_raw": [
+      [
+        300,
+        30000,
+        0,
+        1900
+      ]
+    ]
+  }
+}

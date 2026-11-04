@@ -1,0 +1,22 @@
+[
+  "full-encoder-transient-owner0-sender03",
+  "full-encoder-transient-owner3-sender04",
+  "full-encoder-persistent",
+  "full-encoder-transient-raw",
+  "full-encoder-persistent-raw",
+  "full-encoder-magnet",
+  "full-encoder-transient-lease",
+  "full-encoder-transient-deadline",
+  "full-encoder-transient-clock",
+  "full-encoder-transient-flash",
+  "full-encoder-transient-wrap",
+  "full-encoder-priority-s1",
+  "full-encoder-priority-s2",
+  "full-encoder-priority-s3",
+  "full-encoder-priority-s4",
+  "full-encoder-priority-s5",
+  "full-encoder-priority-s6",
+  "full-encoder-priority-s7",
+  "full-encoder-priority-s8",
+  "full-encoder-priority-s9"
+]

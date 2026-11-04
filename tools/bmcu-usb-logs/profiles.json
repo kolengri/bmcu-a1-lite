@@ -1,0 +1,17 @@
+{
+  "default": "260b0403",
+  "profiles": {
+    "260b0403": {
+      "collector": "validation/firmware/builds/bmcu-usb-logs",
+      "sha256": "ebc4363d1b845751bf6ca925305829dc12f5c4fe832c029caf677fec63e7fcf8",
+      "frame_bytes": 536,
+      "flash_bytes": 512,
+      "report_bytes": 0,
+      "format": 2,
+      "isp_export": true,
+      "firmware": "firmware/bmcu-a1-lite-260b0403.bin",
+      "firmware_sha256": "c0fae2a3df3ab9447292f849336d5335bb276852c5407c78be9ddad258491a9a",
+      "firmware_padded_bytes": 59528
+    }
+  }
+}

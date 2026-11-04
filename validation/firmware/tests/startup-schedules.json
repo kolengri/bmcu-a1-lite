@@ -1,0 +1,96 @@
+{
+  "startup-channel0": {
+    "activity_ms": 0,
+    "bad_channel": 0,
+    "detail": 1,
+    "expect": "module",
+    "in_range_ms": 0,
+    "stream": "samples"
+  },
+  "startup-channel1": {
+    "activity_ms": 0,
+    "bad_channel": 1,
+    "detail": 2,
+    "expect": "module",
+    "in_range_ms": 0,
+    "stream": "samples"
+  },
+  "startup-channel2": {
+    "activity_ms": 0,
+    "bad_channel": 2,
+    "detail": 3,
+    "expect": "module",
+    "in_range_ms": 0,
+    "stream": "samples"
+  },
+  "startup-channel3": {
+    "activity_ms": 0,
+    "bad_channel": 3,
+    "detail": 4,
+    "expect": "module",
+    "in_range_ms": 0,
+    "stream": "samples"
+  },
+  "startup-default-flags": {
+    "activity_ms": 400,
+    "bad_channel": -1,
+    "detail": 5,
+    "expect": "module",
+    "in_range_ms": 0,
+    "stream": "flags"
+  },
+  "startup-delayed60": {
+    "activity_ms": 0,
+    "bad_channel": -1,
+    "expect": "gesture",
+    "in_range_ms": 60,
+    "stream": "samples"
+  },
+  "startup-filament": {
+    "activity_ms": 0,
+    "bad_channel": -1,
+    "detail": 0,
+    "expect": "filament",
+    "in_range_ms": 0,
+    "key_v": 1.8,
+    "stream": "samples"
+  },
+  "startup-immediate": {
+    "activity_ms": 0,
+    "bad_channel": -1,
+    "expect": "gesture",
+    "in_range_ms": 0,
+    "stream": "samples"
+  },
+  "startup-late400": {
+    "activity_ms": 400,
+    "bad_channel": -1,
+    "expect": "gesture",
+    "in_range_ms": 0,
+    "stream": "samples"
+  },
+  "startup-no-dma": {
+    "activity_ms": 100000,
+    "bad_channel": -1,
+    "detail": 6,
+    "expect": "adc",
+    "in_range_ms": 0,
+    "stream": "samples"
+  },
+  "startup-permanent": {
+    "activity_ms": 0,
+    "bad_channel": -1,
+    "detail": 1,
+    "expect": "module",
+    "in_range_ms": 100000,
+    "stream": "samples"
+  },
+  "startup-te-only": {
+    "activity_ms": 400,
+    "bad_channel": -1,
+    "detail": 6,
+    "expect": "adc",
+    "in_range_ms": 0,
+    "stream": "te"
+  }
+}

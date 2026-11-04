@@ -1,0 +1,15 @@
+.pio/
+.venv/
+.grepai/
+__pycache__/
+*.pyc
+.DS_Store
+artifacts/*
+!artifacts/bmcu-a1/
+artifacts/bmcu-a1/*
+!artifacts/bmcu-a1/README.md
+validation/firmware/logs/
+validation/firmware/work/
+validation/firmware/evidence/
+validation/firmware/firmware-test-summary.json
+

@@ -1,0 +1,36 @@
+[
+  {
+    "build": "2704",
+    "archive_sha256": "05508ce9f5f924677565524bdbd6368158b4190e75eba901641ed5f27087413b",
+    "source_files": {
+      "src/bambu_bus_ams.cpp": "2794b015b9f3a6f1661bad550e3a3096123cb1aa9de9d0745197c5e5b0e8914c",
+      "src/ADC_DMA.cpp": "64ec9e439aefc21abccb4472e9b6b6c1bd967bf2f4be354ea4e9004ac2a85c60",
+      "src/Motion_control.cpp": "8035562e544ddf022e7b60194183efde0247ce6c371bc775e4e42bdf8c1adbf6"
+    },
+    "role": "Historical project serializer oracle, not a stock printer trace"
+  },
+  {
+    "build": "2705",
+    "archive_sha256": "01ef0f41cf9e3a574228e016d7855796e614d0bdf7ddbbf725dfbd33613065c1",
+    "source_files": {
+      "src/bambu_bus_ams.cpp": "c30eaf954ab9923bceb7d2613b5b192bcd9d671256c6cad5c710d5deec89f284"
+    },
+    "role": "Historical project serializer oracle, not a stock printer trace"
+  },
+  {
+    "build": "2804",
+    "archive_sha256": "978866c1b4eb2953e63217c6006e72f0e603f86022935e2430cb558ede6bd950",
+    "source_files": {
+      "src/bambu_bus_ams.cpp": "2f6eccdb11f9afb5923edcaab7dccdd5905fb404c572c50f1c4507e240b938d5"
+    },
+    "role": "Historical project serializer oracle, not a stock printer trace"
+  },
+  {
+    "build": "3103",
+    "archive_sha256": "d9408ad6aee35e1261ea8554e358b1bbde118de905ce8864f0e838584cba7778",
+    "source_files": {
+      "src/bambu_bus_ams.cpp": "61f48930ed7c2b1bb32a6e1324abb33cd411b807b440ccf5fbd2f6eac9e5d5fd"
+    },
+    "role": "Historical project serializer oracle, not a stock printer trace"
+  }
+]
