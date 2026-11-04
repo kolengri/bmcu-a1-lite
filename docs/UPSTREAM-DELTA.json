@@ -1,0 +1,184 @@
+{
+  "upstream_commit": "5b8e235576f9d6c30403e737451ef60f97857dac",
+  "candidate_build": "260b0404",
+  "scope": "src/** and platformio.ini; normalized line endings; excludes tests, binaries, logs, research copies and additional linker scripts",
+  "changed_files": 29,
+  "added_lines": 5518,
+  "deleted_lines": 553,
+  "files": [
+    {
+      "path": "platformio.ini",
+      "added_lines": 203,
+      "deleted_lines": 493,
+      "new_file": false
+    },
+    {
+      "path": "src/ADC_DMA.cpp",
+      "added_lines": 17,
+      "deleted_lines": 0,
+      "new_file": false
+    },
+    {
+      "path": "src/Flash_saves.cpp",
+      "added_lines": 487,
+      "deleted_lines": 10,
+      "new_file": false
+    },
+    {
+      "path": "src/Flash_saves.h",
+      "added_lines": 23,
+      "deleted_lines": 0,
+      "new_file": false
+    },
+    {
+      "path": "src/MC_PULL_calibration.cpp",
+      "added_lines": 72,
+      "deleted_lines": 2,
+      "new_file": false
+    },
+    {
+      "path": "src/Motion_control.cpp",
+      "added_lines": 727,
+      "deleted_lines": 23,
+      "new_file": false
+    },
+    {
+      "path": "src/_bus_hardware.cpp",
+      "added_lines": 98,
+      "deleted_lines": 0,
+      "new_file": false
+    },
+    {
+      "path": "src/_bus_hardware.h",
+      "added_lines": 24,
+      "deleted_lines": 0,
+      "new_file": false
+    },
+    {
+      "path": "src/ahub_bus.cpp",
+      "added_lines": 4,
+      "deleted_lines": 0,
+      "new_file": false
+    },
+    {
+      "path": "src/authority_observation.cpp",
+      "added_lines": 135,
+      "deleted_lines": 0,
+      "new_file": true
+    },
+    {
+      "path": "src/authority_observation.h",
+      "added_lines": 17,
+      "deleted_lines": 0,
+      "new_file": true
+    },
+    {
+      "path": "src/bambu_bus_ams.cpp",
+      "added_lines": 807,
+      "deleted_lines": 19,
+      "new_file": false
+    },
+    {
+      "path": "src/bambu_bus_ams.h",
+      "added_lines": 4,
+      "deleted_lines": 0,
+      "new_file": false
+    },
+    {
+      "path": "src/continuous_journal.inc",
+      "added_lines": 199,
+      "deleted_lines": 0,
+      "new_file": true
+    },
+    {
+      "path": "src/crc_bus.c",
+      "added_lines": 19,
+      "deleted_lines": 0,
+      "new_file": false
+    },
+    {
+      "path": "src/flight_recorder.cpp",
+      "added_lines": 637,
+      "deleted_lines": 0,
+      "new_file": true
+    },
+    {
+      "path": "src/flight_recorder.h",
+      "added_lines": 172,
+      "deleted_lines": 0,
+      "new_file": true
+    },
+    {
+      "path": "src/full_load.cpp",
+      "added_lines": 192,
+      "deleted_lines": 0,
+      "new_file": true
+    },
+    {
+      "path": "src/full_load.h",
+      "added_lines": 56,
+      "deleted_lines": 0,
+      "new_file": true
+    },
+    {
+      "path": "src/hal/time_hw.h",
+      "added_lines": 13,
+      "deleted_lines": 0,
+      "new_file": false
+    },
+    {
+      "path": "src/lite_profile.h",
+      "added_lines": 374,
+      "deleted_lines": 0,
+      "new_file": true
+    },
+    {
+      "path": "src/main.cpp",
+      "added_lines": 252,
+      "deleted_lines": 6,
+      "new_file": false
+    },
+    {
+      "path": "src/many_soft_AS5600.cpp",
+      "added_lines": 6,
+      "deleted_lines": 0,
+      "new_file": false
+    },
+    {
+      "path": "src/ownership_detail.h",
+      "added_lines": 39,
+      "deleted_lines": 0,
+      "new_file": true
+    },
+    {
+      "path": "src/setup_trial.cpp",
+      "added_lines": 564,
+      "deleted_lines": 0,
+      "new_file": true
+    },
+    {
+      "path": "src/setup_trial.h",
+      "added_lines": 61,
+      "deleted_lines": 0,
+      "new_file": true
+    },
+    {
+      "path": "src/single_channel_trial.cpp",
+      "added_lines": 214,
+      "deleted_lines": 0,
+      "new_file": true
+    },
+    {
+      "path": "src/single_channel_trial.h",
+      "added_lines": 43,
+      "deleted_lines": 0,
+      "new_file": true
+    },
+    {
+      "path": "src/working_boot.inc",
+      "added_lines": 59,
+      "deleted_lines": 0,
+      "new_file": true
+    }
+  ]
+}

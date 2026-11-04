@@ -2161,11 +2161,23 @@ bool v11_maintenance_allowed() {
             MC_PULL_pct_f[ch]>=AUTO_UNLOAD_START_PCT) return false;
     return true;
 }
+#if BMCU_SETUP_INSERTION_RECOVERY
+bool v11_diagnostic_idle() {
+    for(uint8_t ch=0;ch<4;++ch)
+        if(dm_auto_state[ch]!=DM_AUTO_IDLE || gst_active[ch] || auto_unload_arm[ch] ||
+            auto_unload_active[ch] || !MOTOR_CONTROL[ch].pwm_zeroed)return false;
+    return true;
+}
+#endif
 bool v11_metadata_allowed() {
     if (setup_trial_phase()!=SetupPhase::operation || !full_load_empty() || !lite_motion_ready() || full_load_journal_pending() ||
         ams[0].now_filament_num<4u || Flash_setup_fault()) return false;
+#if BMCU_SETUP_INSERTION_RECOVERY
+    return v11_diagnostic_idle();
+#else
     for (const auto &m:MOTOR_CONTROL) if (!m.pwm_zeroed) return false;
     return true;
+#endif
 }
 #endif
 
@@ -3689,6 +3701,9 @@ static void MOTOR_get_dir()
     for (uint8_t i = 0; i < kChCount; i++)
         if (test[i]) DIRECTION_PWM(i, 0);
 
+#if BMCU_SETUP_INSERTION_RECOVERY
+    if(setup_trial_retry_pending())return; // A void PWM guard may have aborted the final sample.
+#endif
     // zaktualizuj tylko tam, gdzie faktycznie zmieniło się dir
     for (uint8_t i = 0; i < kChCount; i++)
     {
@@ -3767,11 +3782,22 @@ bool Motion_control_setup_init(bool empty) {
         setup_trial_admission_fail(SetupFault::module,detail); return false;
     }
     MC_AS5600.init(AS5600_SCL_PORT,AS5600_SCL_PIN,AS5600_SDA_PORT,AS5600_SDA_PIN,4);
+#if BMCU_SETUP_INSERTION_RECOVERY
+    if(empty)return setup_trial_poll(true); // Modules/encoders now initialized; no recursion into init.
+#endif
     return Motion_control_setup_inputs(empty,false,empty);
 }
-bool Motion_control_setup_inputs(bool centered,bool calibrated,bool empty) {
+bool Motion_control_setup_inputs(bool centered,bool calibrated,bool empty
+#if BMCU_SETUP_INSERTION_RECOVERY
+    ,const float* snapshot
+#endif
+) {
     if(setup_trial_bus_allowed()) return false;
+#if BMCU_SETUP_INSERTION_RECOVERY
+    const float *v=snapshot?snapshot:ADC_DMA_get_value();
+#else
     const float *v=ADC_DMA_get_value();
+#endif
     for (uint8_t ch=0;ch<4;++ch) {
         const float raw=v[6-2*ch], key=v[7-2*ch];
         if (!filament_channel_inserted[ch]) { setup_trial_fail(SetupFault::module); return false; }
@@ -3803,7 +3829,11 @@ bool Motion_control_setup_direction() {
     MC_PULL_ONLINE_read(time_ticks32());
     MOTOR_init(); // Production V11 initialization and direction phases.
     Motion_control_setup_stop();
-    return setup_direction_saved && setup_trial_fault()==SetupFault::none;
+    return setup_direction_saved && setup_trial_fault()==SetupFault::none
+#if BMCU_SETUP_INSERTION_RECOVERY
+        && !setup_trial_retry_pending()
+#endif
+    ;
 }
 #endif
 

@@ -1,5 +1,13 @@
 # A1 compatibility and Unload investigation
 
+## Current physical result
+
+On2026-11-04 the owner reported a completed two-color print on260b0404.
+This is the first reported completed multicolor print in this investigation.
+It supports operation of the integrated firmware on the development setup;
+slot numbers, change count, duration and material were not supplied.
+[The exact image and evidence limits](VALIDATION.json) are retained separately.
+
 ## Starting point
 
 The project began with BMCU-C-PJARCZAK V11 and an A1 running 01.08.01.00.
@@ -11,9 +19,9 @@ changing the advertised AMS identity alone was insufficient.
 The implementation accumulated protocol compatibility, durable path ownership,
 empty setup/calibration, native feed authority, heartbeat recovery, four-slot
 handling, sensor diagnostics and USB evidence collection. This is why the result
-is a standalone project rather than a small upstream patch. Already at 260b0401,
-the normalized source/config delta against pinned upstream was 28 files,
-5,046 insertions and 488 deletions, excluding tests, logs and working-mode changes.
+is a standalone project rather than a small upstream patch. At260b0404, the normalized source/config delta against pinned upstream is
+29 files,5,518 insertions and553 deletions, excluding tests, logs, research copies
+and additional linker scripts. See [the assessment](UPSTREAM-DELTA.md).
 
 ## What the evidence showed
 
@@ -145,3 +153,33 @@ from payload while its
 uses the header for flash-command checks. It is not an independent oracle for
 the failed marker operation. No accessible exact factory-ROM dump was obtained;
 V003 behavior is not substituted for V203 evidence.
+
+## 260b0404: setup recovery and diagnostics affecting intake
+
+The next owner report was red indicators and no intake after visible calibration.
+Source inspection showed that the green calibration cue preceded empty settling,
+direction detection and the final ownership commit. Filament presence during
+those stages set a sticky setup fault. Build0404 changes the intermediate cue to
+yellow and implements a stopped, recoverable insertion pause. Sensor validity,
+clock/storage faults and the overall setup bound remain enforced.
+
+An actual-body regression then exposed a separate mechanism: local intake PWM
+was classified as a pull event, and diagnostic Flash reservation made the next
+local-intake tick cancel itself. Restricting that event alone was insufficient:
+legitimate RX-loss events reproduced the same scheduling conflict. Build0404
+also defers diagnostic submissions during local intake while retaining genuine
+control-storage and native motion protections.
+
+The final binary passed133 production-body host scenarios and13 profile guards;
+source-archive and patch replays produced the same binary. Independent firmware
+and host-adapter reviews accepted the change before installation. All1,079
+padded image blocks were physically compared successfully. The later owner report
+of a successful two-color print is physical acceptance evidence for this integrated
+image, not proof that every earlier failure had one cause or an isolated trial of
+the early-insertion boundary.
+
+The installation also exposed a separate host-flasher assumption: after a full
+erase, the board accepted a tail comparison against repeated E339 and rejected FF.
+The corrected adapter changes only that post-erase comparison and still requires
+header0 plus payload0000 for program/erase/verify operations. This successful
+full-erase installation does not solve the non-erasing USB export marker failure.

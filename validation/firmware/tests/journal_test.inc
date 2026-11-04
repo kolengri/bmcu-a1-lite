@@ -52,6 +52,19 @@ static int journal_case(){
                 if(flight::jvalid(host_log+p*256)&&flight::jget(e+12)==flight::jcrc(e,12,flight::jget(host_log+p*256+4))&&(e[8]==9||e[8]==12))found=true;}
             CHECK(found);journal_inhibited_export();return 0;
         }
+#if BMCU_SETUP_INSERTION_RECOVERY
+        if(is("full-journal-run")){
+            full_pulls[2]=1.62f;repair_tick(100,true,false);
+            CHECK(v11_pwm(2)&&!v11_diagnostic_idle());
+            const auto programs=log_programs;const auto dropped=++bus_port_to_host.rx_dropped;
+            repair_tick(150,true,false);
+            CHECK(v11_pwm(2)&&log_programs>programs);bool recorded=false;
+            for(unsigned page=0;page<2;++page){auto* p=host_log+page*256;if(!flight::jvalid(p))continue;
+                for(unsigned slot=0;slot<14;++slot){auto* e=p+32+slot*16;
+                    if(flight::jget(e+12)==flight::jcrc(e,12,flight::jget(p+4))&&e[8]==14&&flight::jget(e+4)==dropped)recorded=true;}}
+            CHECK(recorded);full_pulls[2]=1.65f;repair_tick(100,true,false);
+        }
+#endif
         const auto start=host_clock;const auto tx=repair_tx;
         for(unsigned ms=0;ms<125000;++ms){
             delay(1);++repair_elapsed;

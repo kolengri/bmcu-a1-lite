@@ -6,9 +6,8 @@ import subprocess
 import sys
 
 PACKET = Path(__file__).resolve().parents[1]
-WORKSPACE = PACKET.parents[2]
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument('--source', type=Path, default=PACKET/'work/candidate')
+parser.add_argument('--source', type=Path, default=PACKET.parents[1])
 parser.add_argument('--logs', type=Path, default=PACKET/'logs/queue')
 parser.add_argument('cases', nargs='*')
 args = parser.parse_args()
@@ -22,8 +21,8 @@ cases = args.cases or [
     'full-rx-busy-wrap-owner3-sender04',
 ]
 command = [
-    sys.executable, '-B', str(WORKSPACE/'tools/bmcu-harness/check_setup.py'),
-    str(args.source), '--packet-runner', str(PACKET/'tests/check_setup.py'),
+    sys.executable, '-B', str(PACKET/'tests/check_setup.py'),
+    str(args.source),
     '--fixtures', str(PACKET/'tests'), '--logs', str(args.logs),
     *flags, '--keep-going', '--cases', *cases,
 ]

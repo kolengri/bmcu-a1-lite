@@ -64,6 +64,8 @@ static void host_gesture_sample();
 static void host_release_observe();
 static void host_fault_observe();
 static void host_cal_observe();
+static void host_insertion_stage(unsigned);
+static void host_insertion_write(uint32_t);
 #include "setup_trial.cpp"
 static void host_ws_queued(const WS2812_class*,uint32_t,uint8_t);
 static void host_ws_delivered(const WS2812_class*,const uint32_t*,uint8_t);
@@ -102,6 +104,11 @@ static std::map<const WS2812_class*,std::pair<uint32_t,SetupPhase>> release_queu
 static bool release_expiry_checked=false,release_final_stable_checked=false;
 static void release_control_sample();
 static int release_verify();
+static bool insertion_case(){return scenario.rfind("continuous-fresh-insertion-",0)==0;}
+static void insertion_input();
+static void insertion_tick();
+static int insertion_verify(const char*);
+static void insertion_cue(uint32_t);
 static bool continuous_fresh(){return scenario.rfind("continuous-fresh-",0)==0;}
 static bool any_case(){return scenario.rfind("any-",0)==0||continuous_fresh();}
 static bool any_success(){return continuous_fresh()||scenario=="detail-normal"||scenario=="any-0"||scenario=="any-1"||scenario=="any-2"||scenario=="any-3"||scenario=="any-baseline"||scenario=="any-retry";}
@@ -110,6 +117,10 @@ static bool is(const char* s){return scenario==s||(continuous_fresh()&&scenario=
 static unsigned channel(int t,int c){return t==TIM2?3:t==TIM3?2:c<2?1:0;}
 static void compare(int t,int c,uint16_t v){
     const unsigned ch=channel(t,c);
+#if BMCU_SETUP_INSERTION_RECOVERY
+    if(insertion_paused||(insertion_epoch&&setup_direction_pwm_call&&!host_pwm_value)){
+        CHECK(!setup_trial_bus_allowed());CHECK(v==(setup_motor_energized[ch]?1000u:0u));return;}
+#endif
     const int other=compare_values[t][c^1];
     if(v!=other && v!=compare_values[t][c]){
 #if BMCU_LITE_FULL_LOAD
@@ -254,6 +265,7 @@ static void input(){
     if(mode==SetupPhase::calibration && is("program-error") && cal_start && ms-cal_start>10000)host_fail_program=true;
 #if BMCU_USB_FLIGHT_RECORDER
     if(release_case())release_control_sample();
+    if(insertion_case())insertion_input();
 #endif
 }
 #ifdef HOST_ENCODER_DRIVER
@@ -280,6 +292,7 @@ uint8_t AS5600_soft_IIC_many::updata_angle(){
 #endif
 static void host_ws_queued(const WS2812_class* led,uint32_t rgb,uint8_t i){
     CHECK(i<2);leds[led][i]=rgb;
+    if(insertion_case())insertion_cue(rgb);
     if(release_case()&&i==0){const auto v=std::make_pair(rgb,setup_trial_phase());auto it=release_queue_last.find(led);
         if(it==release_queue_last.end()||it->second!=v){release_queue.push_back({host_clock,led,{rgb,rgb},setup_trial_phase()});release_queue_last[led]=v;}}
 
@@ -340,6 +353,7 @@ static void raw_dma_boundary(){
 }
 static void time_hook(){
     ++host_clock;raw_dma_boundary();
+    if(insertion_case())insertion_tick();
 #if BMCU_USB_WORKING_MODE
     working_bootstrap();
 #endif
@@ -358,7 +372,7 @@ static void time_hook(){
 
     if(!finished &&
 #if BMCU_LITE_CONTINUOUS_NATIVE
-       (!continuous_fresh()||(flight::report.flags&2u)) &&
+       (!continuous_fresh()||insertion_case()||(flight::report.flags&2u)) &&
 #endif
        (setup_trial_phase()==SetupPhase::fault || setup_trial_phase()==SetupPhase::success)){
         if(!park_start)park_start=host_clock;
@@ -483,7 +497,16 @@ static void host_input_detail_barrier(const float*,unsigned){}
 #include "working_test.inc"
 #if BMCU_USB_ISP_EXPORT
 #include "marker_test.inc"
+#include "insertion_recovery_test.inc"
 #endif
+#endif
+#if !BMCU_USB_ISP_EXPORT
+static void host_insertion_stage(unsigned){}
+static void host_insertion_write(uint32_t){}
+static void insertion_input(){}
+static void insertion_tick(){}
+static void insertion_cue(uint32_t){}
+static int insertion_verify(const char*){CHECK(false);return 1;}
 #endif
 int main(int argc,char**argv){
     CHECK(argc==3);scenario=argv[1];time_hw_tpms=1000;time_hw_tpus=1;host_clock=100000;
@@ -615,6 +638,7 @@ int main(int argc,char**argv){
     std::printf("phase=%u fault=%u programs=%u erases=%u drives=%u/%u/%u/%u bus=%d\n",unsigned(phase),unsigned(fault),host_programs,host_erases,drives[0],drives[1],drives[2],drives[3],bus_started);
     std::fflush(stdout);
 #if BMCU_LITE_CONTINUOUS_NATIVE
+    if(insertion_case())return insertion_verify(argv[2]);
     if(continuous_fresh())return phase==SetupPhase::fault?continuous_setup_fault_verify():continuous_verify();
 #endif
 #if BMCU_LITE_FULL_LOAD && BMCU_LITE_AUTOMATIC_CAPTURE

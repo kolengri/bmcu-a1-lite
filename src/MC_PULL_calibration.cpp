@@ -426,6 +426,9 @@ void MC_PULL_calibration_boot()
             if (!(selected & (1u << ch))) continue;
             if (!capture_minmax_one_ch_event(ch, 1.65f, offs[ch], vmin[ch], vmax[ch], pol[ch]))
             {
+#if BMCU_SETUP_INSERTION_RECOVERY
+                if(setup_trial_retry_pending())return;
+#endif
                 blink_all(0x18u, 0u, 0u, 2, 220, 220);
                 return;
             }
@@ -480,7 +483,13 @@ void MC_PULL_calibration_boot()
         MC_DM_KEY_NONE_THRESH[ch] = dm_none[ch];
     }
     g_valid_mask = valid & selected;
-    if (!stored) blink_all(0u, 0x16u, 0u, 2, 220, 220);
+    if (!stored) blink_all(
+#if BMCU_SETUP_INSERTION_RECOVERY
+        0x16u,
+#else
+        0u,
+#endif
+        0x16u, 0u, 2, 220, 220); // Calibration is not runtime readiness.
 }
 
 #endif // ordinary calibration

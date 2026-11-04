@@ -5,7 +5,7 @@ static void marker_hook(){host_clock+=1000;++marker_calls;
     if(log_tx.size()>=536 || marker_calls>150)throw LoopComplete{};
 }
 static void marker_reset(){flight_reset();bus_started=false;g_adc_dma_inited=false;host_dma1.CFGR=0;DMA1_Channel4->CFGR=DMA1_Channel5->CFGR=0;marker_calls=0;host_time_hook=marker_hook;}
-static void marker_expected(uint32_t words[4]){words[0]=0x33494642u;words[1]=flight::build;words[2]=0x00010001u;words[3]=flight::jcrc(words,12);CHECK(words[3]==0x1342b362u);}
+static void marker_expected(uint32_t words[4]){words[0]=0x33494642u;words[1]=flight::build;words[2]=0x00010001u;words[3]=flight::jcrc(words,12);CHECK(words[3]==(flight::build==0x260b0404u?0x1987ba7bu:0x1342b362u));}
 static bool marker_valid(){uint32_t expected[4];marker_expected(expected);return !memcmp(host_marker,expected,16);}
 static void marker_blank(){for(unsigned n=0;n<256;n+=4){uint32_t v;memcpy(&v,host_marker+n,4);CHECK(v==0xffffffffu||v==0xe339e339u);}}
 static void marker_passive(){const auto de=marker_export_enables,erases=marker_erases;try{flight::boot();CHECK(false);}catch(const LoopComplete&){}

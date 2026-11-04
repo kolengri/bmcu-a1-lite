@@ -1,0 +1,11 @@
+{
+  "default_off": true,
+  "default_profile": "USB_SETUP_INSERTION_RECOVERY",
+  "valid_profile": true,
+  "invalid_profiles_rejected": 13,
+  "input_receipt": "validation/firmware/receipts/insertion.json",
+  "input_receipt_sha256": "45378f80b3e787882a20fb25744aeecc01e1735dd6084c3a6e08b9ec2991c18c",
+  "header_sha256": "91a4c3bd3e9294b795e3b17ecb0b9368ee8367c101aeddb3eb6d458a0d18d21e",
+  "raw_input_receipt_sha256": "7e3f90019b370f2d1154e1051b9173d480e339f2dc2a72b061f82e359fdca67c",
+  "receipt_note": "Input reference rebound to the sanitized public receipt retaining the exact tested defines."
+}

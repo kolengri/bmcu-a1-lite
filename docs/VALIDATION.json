@@ -1,0 +1,16 @@
+{
+  "date": "2026-11-04",
+  "build": "260b0404",
+  "firmware_sha256": "487c6c9f07f93a5682f81b9a1f838ee1f6106c1b19d8ab09875d07543b7efdb5",
+  "evidence_type": "owner_report",
+  "observation": "The printer successfully printed a two-color part; the owner reports that it is working.",
+  "hardware": "BMCU 370C DM Pro, CH32V203C8T6; exact PCB revision unknown",
+  "printer": "Bambu Lab A1",
+  "printer_firmware": "01.08.01.00 (previously established; not independently queried after the print)",
+  "limits": [
+    "One owner-reported completed two-color print; no fresh trace or independent physical observation.",
+    "Slot numbers, material, number of changes, print duration and speed were not supplied.",
+    "Does not separately reproduce early insertion recovery or qualify all four slots, endurance, other boards or printer firmware.",
+    "Automatic USB log retrieval remains unavailable."
+  ]
+}
